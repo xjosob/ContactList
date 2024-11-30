@@ -4,12 +4,16 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Models;
+using Business.Services;
 
 namespace Presentation.ConsoleApp.MainApp.Services
 {
     public class MenuService
     {
-        public void Show()
+        private static readonly ContactService _contactService = new();
+
+        public static void Show()
         {
             while (true)
             {
@@ -17,7 +21,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
             }
         }
 
-        public void MainMenu()
+        public static void MainMenu()
         {
             Console.Clear();
             Console.WriteLine($"{"1.", -5} Add contact");
@@ -32,15 +36,17 @@ namespace Presentation.ConsoleApp.MainApp.Services
                     ExitOption();
                     break;
                 case ConsoleKey.D1:
+                    CreateOption();
                     break;
                 case ConsoleKey.D2:
+                    ViewOption();
                     break;
                 default:
                     break;
             }
         }
 
-        public void ExitOption()
+        public static void ExitOption()
         {
             while (true)
             {
@@ -59,22 +65,56 @@ namespace Presentation.ConsoleApp.MainApp.Services
             }
         }
 
-        public void CreateOption()
+        public static void CreateOption()
         {
             Console.Clear();
+            ContactModel contact = new();
+
+            Console.Write("First Name: ");
+            contact.FirstName = Console.ReadLine();
+
+            Console.Write("Last Name: ");
+            contact.LastName = Console.ReadLine();
+
+            Console.Write("Email: ");
+            contact.Email = Console.ReadLine();
+
+            Console.Write("Phone number: ");
+            contact.PhoneNumber = Console.ReadLine();
+
+            _contactService.Add(contact);
+            Console.WriteLine(
+                $"{contact.FirstName} {contact.LastName} added to contact list! Press any key to continue"
+            );
             Console.ReadKey();
         }
 
-        public void ViewOption()
+        public static void ViewOption()
         {
             Console.Clear();
+            var contacts = _contactService.GetAll();
+
+            if (contacts.Any())
+            {
+                foreach (var contact in contacts)
+                {
+                    Console.WriteLine(
+                        $"{contact.FirstName} {contact.LastName}, email: {contact.Email}, phone number: {contact.PhoneNumber}"
+                    );
+                }
+            }
+            else
+            {
+                InvalidOption("No contacts available.");
+            }
+            Console.WriteLine("Press any key to return to the main menu.");
             Console.ReadKey();
         }
 
-        public string InvalidOption(string message)
+        public static void InvalidOption(string message)
         {
             Console.Clear();
-            return message;
+            Console.WriteLine(message);
         }
     }
 }
