@@ -9,16 +9,34 @@ namespace Business.Services
 {
     public class ContactService
     {
-        private readonly List<ContactModel> _contact = [];
+        private List<ContactModel> _contacts = [];
+        private readonly FileService _fileService = new();
 
         public void Add(ContactModel contact)
         {
-            _contact.Add(contact);
+            try
+            {
+                _contacts.Add(contact);
+                _fileService.SaveListToFile(_contacts);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public IEnumerable<ContactModel> GetAll()
         {
-            return _contact;
+            try
+            {
+                _contacts = _fileService.GetListFromFile();
+                return _contacts;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return [];
+            }
         }
     }
 }

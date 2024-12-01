@@ -4,6 +4,8 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Factories;
+using Business.Helpers;
 using Business.Models;
 using Business.Services;
 
@@ -67,26 +69,59 @@ namespace Presentation.ConsoleApp.MainApp.Services
 
         public static void CreateOption()
         {
-            Console.Clear();
-            ContactModel contact = new();
+            try
+            {
+                Console.Clear();
 
-            Console.Write("First Name: ");
-            contact.FirstName = Console.ReadLine();
+                Console.Write("First Name: ");
+                string? firstName = Console.ReadLine();
+                if (string.IsNullOrEmpty(firstName))
+                {
+                    MessageLog("First name cannot be empty. Please try again.");
+                    return;
+                }
 
-            Console.Write("Last Name: ");
-            contact.LastName = Console.ReadLine();
+                Console.Write("Last Name: ");
+                string? lastName = Console.ReadLine();
+                if (string.IsNullOrEmpty(lastName))
+                {
+                    MessageLog("Last name cannot be empty. Please try again.");
+                    return;
+                }
 
-            Console.Write("Email: ");
-            contact.Email = Console.ReadLine();
+                Console.Write("Email: ");
+                string? email = Console.ReadLine();
+                if (string.IsNullOrEmpty(email) || !ValidationHelper.IsValidEmail(email))
+                {
+                    MessageLog("Invalid email format. Please try again.");
+                    return;
+                }
 
-            Console.Write("Phone number: ");
-            contact.PhoneNumber = Console.ReadLine();
+                Console.Write("Phone number: ");
+                string? phoneNumber = Console.ReadLine();
 
-            _contactService.Add(contact);
-            Console.WriteLine(
-                $"{contact.FirstName} {contact.LastName} added to contact list! Press any key to continue"
-            );
-            Console.ReadKey();
+                if (
+                    string.IsNullOrEmpty(phoneNumber)
+                    || !ValidationHelper.IsValidPhoneNumber(phoneNumber)
+                )
+                {
+                    MessageLog("Invalid phone number format. Please try again.");
+                    return;
+                }
+
+                ContactModel contact = ContactFactory.CreateContact(
+                    firstName,
+                    lastName,
+                    email,
+                    phoneNumber
+                );
+                _contactService.Add(contact);
+                MessageLog($"{contact.FirstName} {contact.LastName} added to contact list!");
+            }
+            catch (Exception ex)
+            {
+                MessageLog(ex.Message);
+            }
         }
 
         public static void ViewOption()
@@ -105,16 +140,16 @@ namespace Presentation.ConsoleApp.MainApp.Services
             }
             else
             {
-                InvalidOption("No contacts available.");
+                MessageLog("No contacts available.");
             }
-            Console.WriteLine("Press any key to return to the main menu.");
-            Console.ReadKey();
         }
 
-        public static void InvalidOption(string message)
+        public static void MessageLog(string message)
         {
             Console.Clear();
             Console.WriteLine(message);
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }
