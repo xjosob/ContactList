@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Business.Models;
 
 namespace Business.Services
 {
-    public class ContactService
+    public class ContactService : IContactService
     {
         private List<ContactModel> _contacts = [];
         private readonly FileService _fileService = new();

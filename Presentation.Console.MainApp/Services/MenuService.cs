@@ -11,11 +11,11 @@ using Business.Services;
 
 namespace Presentation.ConsoleApp.MainApp.Services
 {
-    public class MenuService
+    public class MenuService : IMenuService
     {
-        private static readonly ContactService _contactService = new();
+        private readonly ContactService _contactService = new();
 
-        public static void Show()
+        public void Show()
         {
             while (true)
             {
@@ -23,7 +23,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
             }
         }
 
-        public static void MainMenu()
+        public void MainMenu()
         {
             Console.Clear();
             Console.WriteLine($"{"1.", -5} Add contact");
@@ -67,7 +67,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
             }
         }
 
-        public static void CreateOption()
+        public void CreateOption()
         {
             try
             {
@@ -124,7 +124,7 @@ namespace Presentation.ConsoleApp.MainApp.Services
             }
         }
 
-        public static void ViewOption()
+        public void ViewOption()
         {
             Console.Clear();
             var contacts = _contactService.GetAll();

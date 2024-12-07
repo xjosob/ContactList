@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business.Helpers
 {
-    public static class GuidHelper
+    internal static class GuidHelper
     {
         public static string GenerateGuid()
         {

@@ -1,3 +1,5 @@
 ﻿using Presentation.ConsoleApp.MainApp.Services;
 
-MenuService.Show();
+IMenuService menuService = new MenuService();
+
+menuService.Show();

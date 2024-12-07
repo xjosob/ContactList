@@ -9,7 +9,7 @@ using Business.Models;
 
 namespace Business.Services
 {
-    public class FileService
+    internal class FileService
     {
         private readonly string _directoryPath;
         private readonly string _filePath;
