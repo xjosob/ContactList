@@ -6,14 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Business.Factories;
 using Business.Helpers;
+using Business.Interfaces;
 using Business.Models;
 using Business.Services;
+using Presentation.ConsoleApp.Interfaces;
 
 namespace Presentation.ConsoleApp.MainApp.Services
 {
     public class MenuService : IMenuService
     {
-        private readonly ContactService _contactService = new();
+        private readonly IContactService _contactService;
+
+        public MenuService(IContactService contactService)
+        {
+            _contactService = contactService;
+        }
 
         public void Show()
         {

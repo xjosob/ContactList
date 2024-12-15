@@ -1,4 +1,4 @@
-﻿namespace Presentation.ConsoleApp.MainApp.Services
+﻿namespace Presentation.ConsoleApp.Interfaces
 {
     public interface IMenuService
     {

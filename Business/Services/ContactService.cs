@@ -8,10 +8,10 @@ using Business.Models;
 
 namespace Business.Services
 {
-    public class ContactService : IContactService
+    public class ContactService(IFileService fileService) : IContactService
     {
         private List<ContactModel> _contacts = [];
-        private readonly FileService _fileService = new();
+        private readonly IFileService _fileService = fileService;
 
         public void Add(ContactModel contact)
         {

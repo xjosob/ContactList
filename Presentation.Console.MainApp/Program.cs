@@ -1,5 +1,15 @@
-﻿using Presentation.ConsoleApp.MainApp.Services;
+﻿using Business.Interfaces;
+using Business.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Presentation.ConsoleApp.Interfaces;
+using Presentation.ConsoleApp.MainApp.Services;
 
-IMenuService menuService = new MenuService();
+var serviceProdiver = new ServiceCollection()
+    .AddSingleton<IFileService>(new FileService("Data", "contacts.json"))
+    .AddSingleton<IContactService, ContactService>()
+    .AddTransient<MenuService>()
+    .BuildServiceProvider();
+
+IMenuService menuService = serviceProdiver.GetRequiredService<MenuService>();
 
 menuService.Show();

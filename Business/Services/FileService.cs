@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Business.Interfaces;
 using Business.Models;
 
 namespace Business.Services
 {
-    internal class FileService
+    public class FileService : IFileService
     {
         private readonly string _directoryPath;
         private readonly string _filePath;
